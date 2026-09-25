@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cristian Lay · Estudio de mercado y oportunidades de crecimiento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#FBF7F6; --surface:#FFFFFF; --ink:#2A1A22; --muted:#6E5A63; --line:#EADFE0;
+  --cl:#A6192E; --cl-soft:#F6E3E5; --rose:#E9C6C9; --amethyst:#6B4C8A; --aventurine:#3F7F6A;
+  --citrine:#C9962B; --aqua:#5E9FB3; --neutral:#A89CA1; --neutral2:#8A7F84;
+  --hi:#1F6B4E; --mid:#B07A12; --lo:#6E5A63;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1B1417; --surface:#251C20; --ink:#F4E9EB; --muted:#BFAEB4; --line:#3A2E33;
+    --cl:#E0485E; --cl-soft:#3A1F26; --rose:#D9A9AE; --neutral:#7D7176; --neutral2:#9A8E93;
+    --hi:#5CC79A; --mid:#E0B24F; --lo:#BFAEB4;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1B1417; --surface:#251C20; --ink:#F4E9EB; --muted:#BFAEB4; --line:#3A2E33;
+  --cl:#E0485E; --cl-soft:#3A1F26; --rose:#D9A9AE; --neutral:#7D7176; --neutral2:#9A8E93;
+  --hi:#5CC79A; --mid:#E0B24F; --lo:#BFAEB4;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Manrope,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.6}
+h1,h2,h3{font-family:"Bodoni Moda",Didot,Georgia,serif;font-weight:500;line-height:1.15;margin:0}
+a{color:var(--cl)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* Hero */
+header.hero{padding:56px 0 36px;border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(2.2rem,5.5vw,4rem);max-width:15ch}
+.hero p.lead{max-width:62ch;color:var(--muted);font-size:1.08rem;margin:18px 0 0}
+ .hero .meta{margin-top:28px;font-size:.85rem;color:var(--muted)}
+
+/* Tabs */
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.tablist{display:flex;gap:4px;overflow-x:auto;scrollbar-width:thin}
+.tablist button{font:600 .92rem Manrope,sans-serif;color:var(--muted);background:none;border:0;border-bottom:3px solid transparent;padding:14px 12px;white-space:nowrap;cursor:pointer}
+.tablist button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--cl)}
+.tablist button:focus-visible{outline:2px solid var(--cl);outline-offset:-2px}
+
+section.panel{padding:40px 0 64px}
+section.panel[hidden]{display:none}
+.panel h2{font-size:clamp(1.7rem,3.4vw,2.4rem);margin-bottom:10px}
+.panel .intro{color:var(--muted);max-width:70ch;margin:0 0 28px}
+.panel h3{font-size:1.3rem;margin:36px 0 14px}
+
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+.card h4{margin:0 0 6px;font-size:1rem}
+.card p{margin:0;color:var(--muted);font-size:.95rem}
+.kpi .n{font-family:"Bodoni Moda",Georgia,serif;font-size:2.2rem;line-height:1.1;color:var(--ink)}
+.kpi .l{font-size:.92rem;color:var(--muted);margin-top:6px}
+.src{display:block;font-size:.76rem;color:var(--muted);margin-top:10px}
+.src a{color:var(--muted)}
+.est{display:inline-block;font-size:.72rem;font-weight:700;padding:1px 7px;border-radius:999px;background:var(--cl-soft);color:var(--cl);vertical-align:middle;margin-left:4px}
+.lead-card{border-left:4px solid var(--cl)}
+
+.chartbox{position:relative;height:380px}
+.chartbox.tall{height:440px}
+
+/* Table */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:980px;font-size:.9rem}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:700;cursor:pointer;user-select:none;white-space:nowrap}
+th:hover{color:var(--cl)}
+th[aria-sort="ascending"]::after{content:" ▲";font-size:.7em}
+th[aria-sort="descending"]::after{content:" ▼";font-size:.7em}
+tr.client td{background:var(--cl-soft)}
+tr.client td:first-child{box-shadow:inset 4px 0 0 var(--cl);font-weight:700}
+
+/* DAFO */
+.dafo{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.dafo .card h3{margin:0 0 12px;font-size:1.25rem}
+.dafo ul{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.dafo li{display:grid;grid-template-columns:28px 1fr;gap:8px;font-size:.93rem}
+.dafo li i{font-style:normal;font-size:1.1rem;line-height:1.4}
+.dafo li b{display:block}
+.dafo li span{color:var(--muted)}
+
+/* Priorities */
+.prio{display:inline-block;font-size:.75rem;font-weight:700;padding:2px 10px;border-radius:999px;border:1px solid currentColor}
+.p-alta{color:var(--cl)} .p-media{color:var(--mid)} .p-baja{color:var(--lo)}
+.rec .row{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.rec h4{font-size:1.02rem;margin:4px 0 8px}
+.rec dl{margin:12px 0 0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.88rem}
+.rec dt{font-weight:700} .rec dd{margin:0;color:var(--muted)}
+
+/* Timeline */
+.phases{display:grid;gap:0;border-left:2px solid var(--line);margin-left:10px}
+.phase{position:relative;padding:0 0 26px 26px}
+.phase::before{content:"";position:absolute;left:-8px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--cl)}
+.phase h4{margin:0;font-size:1.05rem}
+.phase .when{font-size:.85rem;color:var(--cl);font-weight:700}
+.phase p{margin:6px 0 0;color:var(--muted);max-width:75ch}
+
+.kw{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.kw span{font-size:.84rem;padding:4px 10px;border-radius:999px;background:var(--bg);border:1px solid var(--line)}
+.note{font-size:.88rem;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:14px 16px;margin-top:18px}
+.guard{border-left:4px solid var(--mid)}
+ol.sources{font-size:.85rem;color:var(--muted);padding-left:20px}
+ol.sources li{margin-bottom:6px}
+footer{border-top:1px solid var(--line);padding:24px 0 40px;font-size:.82rem;color:var(--muted)}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important}}
+@media (max-width:600px){.chartbox{height:320px}.chartbox.tall{height:380px}header.hero{padding-top:36px}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Belleza con alma, también en Google</h1>
+    <p class="lead">Estudio de mercado y oportunidades de crecimiento digital para Cristian Lay en España. Cómo pasar de una marca que se busca por su nombre a una marca que aparece cuando alguien busca un producto, sin competir contra la propia red de distribuidoras y abriendo la marca a un público más joven.</p>
+    <p class="meta">Análisis elaborado por Los Martes No Hay Luna para el equipo de marketing de Cristian Lay. Septiembre de 2026.</p>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Secciones del estudio">
+  <div class="wrap">
+    <div class="tablist" role="tablist">
+      <button role="tab" aria-selected="true" aria-controls="t1" id="b1">Resumen</button>
+      <button role="tab" aria-selected="false" aria-controls="t2" id="b2" tabindex="-1">Mercado</button>
+      <button role="tab" aria-selected="false" aria-controls="t3" id="b3" tabindex="-1">Cliente y búsquedas</button>
+      <button role="tab" aria-selected="false" aria-controls="t4" id="b4" tabindex="-1">Competencia</button>
+      <button role="tab" aria-selected="false" aria-controls="t5" id="b5" tabindex="-1">Posicionamiento</button>
+      <button role="tab" aria-selected="false" aria-controls="t6" id="b6" tabindex="-1">DAFO</button>
+      <button role="tab" aria-selected="false" aria-controls="t7" id="b7" tabindex="-1">Palancas</button>
+      <button role="tab" aria-selected="false" aria-controls="t8" id="b8" tabindex="-1">Hoja de ruta</button>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- 1 RESUMEN -->
+<section class="panel" id="t1" role="tabpanel" aria-labelledby="b1">
+  <h2>Resumen ejecutivo</h2>
+  <p class="intro">Cristian Lay domina todo lo que se busca con su nombre y casi nada de lo que se busca sin él. El canal que genera el 90% de los ingresos, la venta directa, se contrae en España, mientras el comercio online y la joyería con significado crecen. La web nueva es el momento de corregir la base técnica y abrir un segundo motor de crecimiento que sume a la red en lugar de competir con ella. Y hay una segunda oportunidad: la cosmética fideliza a una clienta de unos 40 años, mientras que la joyería de color y tendencia puede atraer a mujeres más jóvenes que hoy no conocen la marca.</p>
+  <div class="grid g4">
+    <div class="card kpi"><div class="n">6</div><div class="l">competidores y un nicho analizados en joyería online, bisutería de moda, venta directa y joyería con piedras</div></div>
+    <div class="card kpi"><div class="n">Alta</div><div class="l">intensidad competitiva en búsquedas de producto genéricas: Tous y Parfois ocupan el top 10 donde Cristian Lay no aparece</div><span class="src">Fuente: auditoría SEO LMNHL, 17/09/2026</span></div>
+    <div class="card kpi"><div class="n">−4,9%</div><div class="l">caída de la venta directa en España en 2024, hasta 610,5 M€</div><span class="src">Fuente: <a href="https://avd.es/el-sector-de-la-venta-directa-en-espana-factura-6105-millones-de-euros-en-2024/" target="_blank" rel="noopener">AVD, 2025</a></span></div>
+    <div class="card kpi"><div class="n">+20,6%</div><div class="l">crecimiento del comercio electrónico en España en 2025, hasta 114.800 M€</div><span class="src">Fuente: <a href="https://www.cnmc.es/sites/default/files/editor_contenidos/Notas%20de%20prensa/2026/20260703_NP%20CE_IV_25.pdf" target="_blank" rel="noopener">CNMC, julio 2026</a></span></div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card lead-card">
+      <h4>Principal amenaza</h4>
+      <p>La demanda de producto genérica (bisutería, plata 925, perlas, perfumes) la capturan Tous, Parfois y cadenas online, y la demanda de marca + catálogo la monetizan agregadores como Tiendeo o Catalogium. A la vez, el oro en máximos está frenando la compra de joyería: la demanda mundial cayó un 17% interanual en el segundo trimestre de 2026.</p>
+      <span class="src">Fuentes: auditoría SEO LMNHL; <a href="https://www.finect.com/usuario/mariarefojos/articulos/el-oro-a-4500-dolares-hunde-la-compra-de-joyas-a-minimos-desde-la-pandemia" target="_blank" rel="noopener">World Gold Council vía Finect</a></span>
+    </div>
+    <div class="card lead-card">
+      <h4>Principal oportunidad</h4>
+      <p>La web nueva permite corregir la base técnica desde el lanzamiento y empezar a competir por búsquedas de producto. Y Cristian Lay tiene algo que ninguna cadena online tiene: miles de distribuidoras que pueden convertirse en creadoras de contenido, con cada venta online atribuida a una de ellas. En España, el 87% de las ventas del top 50 de TikTok Shop ya llega a través de afiliados.</p>
+      <span class="src">Fuentes: auditoría SEO LMNHL; <a href="https://inicia.academy/blog/como-empezar-tiktok-shop-espana" target="_blank" rel="noopener">Lengow/Kalodata vía Inicia Academy</a></span>
+    </div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h4>Cosmética: cuidar el núcleo</h4><p>Es el territorio de la clienta actual, en torno a los 40 años, que compra de forma recurrente a través de su distribuidora. El mercado crece, pero en cosmética el online y la venta directa retroceden: aquí la relación personal sigue siendo la ventaja.</p><span class="src">Fuente: <a href="https://www.alimarket.es/nonfood/noticia_amp/425068/el-mercado-espanol-de-cosmetica--perfume-y-cuidado-personal-crecio-un-5-8--en-2025" target="_blank" rel="noopener">Stanpa vía Alimarket, 2026</a></span></div>
+    <div class="card"><h4>Joyería de color: la puerta a un público joven</h4><p>Piezas de tendencia, color y precio accesible son el producto natural para mujeres de 20 a 35 años que descubren en TikTok y compran para sentirse bien. Entran por una joya y, con el tiempo, pueden llegar a la fragancia y al cuidado de la piel.</p><span class="src">Fuente: <a href="https://universidadeuropea.com/noticias/generacion-z-no-compra-sin-antes-scrollear-informe/" target="_blank" rel="noopener">Observatorio Generación Z, Universidad Europea y Prodigioso Volcán, 2025</a></span></div>
+  </div>
+  <div class="note">Cómo leer este estudio: las cifras con fuente enlazada son datos contrastados. Lo marcado con <span class="est">Est.</span> es una estimación razonada del equipo de LMNHL a partir de observaciones públicas. No se ha tenido acceso a Search Console, Analytics ni herramientas de volumen de búsqueda; conviene contrastar las conclusiones con esos datos internos.</div>
+</section>
+
+<!-- 2 MERCADO -->
+<section class="panel" id="t2" role="tabpanel" aria-labelledby="b2" hidden>
+  <h2>Análisis del mercado</h2>
+  <p class="intro">Cuatro mercados rodean a Cristian Lay y se mueven en direcciones distintas: la cosmética crece pero no online, la venta directa se ajusta, la joyería minorista crece en valor y la joyería online crece a doble dígito.</p>
+  <div class="grid g4">
+    <div class="card kpi"><div class="n">11.819 M€</div><div class="l">mercado de cosmética, perfume y cuidado personal en 2025, +5,8%. Los perfumes crecen un 9,5% y el cuidado facial es la mayor categoría</div><span class="src">Fuente: <a href="https://www.alimarket.es/nonfood/noticia_amp/425068/el-mercado-espanol-de-cosmetica--perfume-y-cuidado-personal-crecio-un-5-8--en-2025" target="_blank" rel="noopener">Stanpa vía Alimarket, 2026</a></span></div>
+    <div class="card kpi"><div class="n">610,5 M€</div><div class="l">venta directa en España en 2024. Quinto mercado de la UE. Andalucía, Cataluña y Madrid suman más del 53%</div><span class="src">Fuente: <a href="https://avd.es/faq-items/cuales-son-las-cifras-de-la-venta-directa-en-espana/" target="_blank" rel="noopener">AVD</a></span></div>
+    <div class="card kpi"><div class="n">2.135 M€</div><div class="l">mercado minorista de joyería y relojería en 2025, +6%. Joyería y bisutería son el 56% de las ventas</div><span class="src">Fuente: <a href="https://www.modaes.com/entorno/el-mercado-minorista-de-joyeria-y-relojeria-crece-un-6-y-supera-los-2100-millones-en-espana" target="_blank" rel="noopener">Informa DBK vía Modaes</a></span></div>
+    <div class="card kpi"><div class="n">+80,1%</div><div class="l">crecimiento interanual de las ventas online de joyería, relojería y platería en el segundo trimestre de 2025 (71,3 M€ en el trimestre)</div><span class="src">Fuente: <a href="https://www.modaes.com/entorno/la-moda-online-acelera-en-espana-con-una-subida-del-135-en-el-segundo-trimestre" target="_blank" rel="noopener">CNMC vía Modaes</a></span></div>
+  </div>
+  <h3>Evolución: joyería minorista frente a venta directa (M€)</h3>
+  <div class="card"><div class="chartbox"><canvas id="cMarket" aria-label="Gráfico de evolución de mercados"></canvas></div>
+  <span class="src">Datos de 2024 y 2025 (joyería) y 2022 y 2024 (venta directa) publicados por DBK, AVD y WFDSA. Los puntos de 2022 y 2023 en joyería y 2023 en venta directa son valores ≈ derivados de las tasas de variación publicadas.</span></div>
+
+  <h3>Factores que están moviendo la demanda</h3>
+  <div class="grid g2">
+    <div class="card"><h4>El oro caro abre espacio a otras líneas</h4><p>Con la onza por encima de 4.500 $, el consumidor compra menos piezas, más ligeras o más orientadas a inversión. Es un argumento para probar líneas que dependan menos del metal: plata, acero, esmaltes, color y bisutería de calidad.</p><span class="src">Fuente: <a href="https://www.finect.com/usuario/mariarefojos/articulos/el-oro-a-4500-dolares-hunde-la-compra-de-joyas-a-minimos-desde-la-pandemia" target="_blank" rel="noopener">World Gold Council vía Finect, 2026</a></span></div>
+    <div class="card"><h4>Joyas que se sienten, no solo se llevan</h4><p>Las tendencias 2026 coinciden en personalización, piezas con significado, color y piedras naturales.</p><span class="src">Fuentes: <a href="https://www.perlesandco.es/recursos/ft40072-las-6-tendencias-en-joyeria-para-la-primaveraverano-2026.html" target="_blank" rel="noopener">Perles &amp; Co</a>; <a href="https://ernestojoyero.com/5-tendencias-en-joyas-en-2026/" target="_blank" rel="noopener">Ernesto Joyero</a></span></div>
+    <div class="card"><h4>TikTok Shop funciona con afiliados</h4><p>Operativo en España desde diciembre de 2024. En el top 50 de tiendas españolas, el 87% de las ventas llega a través de creadores afiliados, frente al 53% en Italia. La comisión de la plataforma es del 9% desde enero de 2026.</p><span class="src">Fuentes: <a href="https://inicia.academy/blog/como-empezar-tiktok-shop-espana" target="_blank" rel="noopener">Lengow/Kalodata vía Inicia Academy</a>; <a href="https://www.cyberclick.es/numerical-blog/tiktok-shop-para-gran-consumo-es-rentable-de-verdad" target="_blank" rel="noopener">Cyberclick</a></span></div>
+    <div class="card"><h4>La cosmética se compra por relación, la joyería se descubre en redes</h4><p>En cosmética el canal online cayó un 4,7% en 2025 y la venta directa también retrocedió, mientras la tienda especializada y el gran consumo crecieron. En joyería, en cambio, lo online se dispara. Cada categoría pide su canal: la cosmética se defiende con la red; la joyería abre la puerta digital a nuevas clientas.</p><span class="src">Fuentes: <a href="https://www.alimarket.es/nonfood/noticia_amp/425068/el-mercado-espanol-de-cosmetica--perfume-y-cuidado-personal-crecio-un-5-8--en-2025" target="_blank" rel="noopener">Stanpa vía Alimarket, 2026</a>; CNMC vía Modaes</span></div>
+    <div class="card"><h4>El público joven compra desde las redes</h4><p>El 70% de la Generación Z decide sus compras a partir de lo que ve en redes: TikTok despierta el deseo e Instagram da confianza. El 61,8% compra buscando bienestar y satisfacción personal, pero filtra por relación calidad-precio.</p><span class="src">Fuente: <a href="https://universidadeuropea.com/noticias/generacion-z-no-compra-sin-antes-scrollear-informe/" target="_blank" rel="noopener">Observatorio Generación Z, Universidad Europea y Prodigioso Volcán, 2025</a></span></div>
+    <div class="card"><h4>La red sigue siendo un activo</h4><p>La venta directa emplea a 193.027 profesionales en España, un 77% mujeres, con una edad media de unos 42 años. Es exactamente el perfil que puede convertirse en creadora de contenido de marca.</p><span class="src">Fuente: <a href="https://avd.es/faq-items/cuales-son-las-cifras-de-la-venta-directa-en-espana/" target="_blank" rel="noopener">AVD</a></span></div>
+  </div>
+
+  <h3>Regulación que condiciona la comunicación</h3>
+  <div class="grid g3">
+    <div class="card guard"><h4>Publicidad identificada</h4><p>Las colaboraciones con creadoras deben señalizarse como publicidad. En junio de 2026 la CNMC emitió sus primeros requerimientos a influencers por no hacerlo.</p><span class="src">Fuente: <a href="https://www.cuatrecasas.com/es/global/propiedad-intelectual/art/cnmc-actua-requerimientos-influencers-publicidad" target="_blank" rel="noopener">Cuatrecasas, 2026</a></span></div>
+    <div class="card guard"><h4>Piedras sin promesas de salud</h4><p>El significado de cada piedra se comunica como tradición y simbolismo. Nunca como efecto curativo o terapéutico, que la normativa de publicidad sanitaria no permite.</p></div>
+    <div class="card guard"><h4>Ingresos sin promesas</h4><p>Los mensajes de captación de distribuidoras y creadoras deben mostrar el esfuerzo real y rangos verificables, no ganancias fáciles. Protege la marca y encaja con la normativa de venta directa y competencia desleal.</p></div>
+  </div>
+</section>
+
+<!-- 3 CLIENTE -->
+<section class="panel" id="t3" role="tabpanel" aria-labelledby="b3" hidden>
+  <h2>Cliente final y comportamiento de búsqueda</h2>
+  <p class="intro">Cuatro perfiles y dos generaciones. Los perfiles son inferidos a partir de los datos sectoriales y de lo observado en buscadores <span class="est">Est.</span>. Se validarán con datos reales de la web nueva.</p>
+  <div class="grid g2">
+    <div class="card"><h4>La clienta de siempre</h4><p>Mujer de unos 40 años o más, núcleo de la cosmética. Compra de forma recurrente a su distribuidora por catálogo o WhatsApp. Busca cuidado facial eficaz, solares y fragancias a buen precio. Le da confianza la recomendación de alguien que conoce. Objeción: «¿funciona igual que una marca de perfumería?».</p></div>
+    <div class="card"><h4>La joven que se regala</h4><p>Mujer de 20 a 35 años que hoy no conoce Cristian Lay o la asocia a su madre. Descubre en TikTok, verifica en Instagram y compara precio. Compra una pieza de color o de tendencia para sí misma, para sentirse bien o marcar un momento. Objeción: «¿aguanta el uso diario o se estropea?».</p></div>
+    <div class="card"><h4>La que regala un momento</h4><p>Une a las dos generaciones: madres que regalan a hijas y al revés, amigas, parejas. Busca «regalo con significado para…», piedras de nacimiento, joyas personalizadas con nombre o fecha. Decide en días y es sensible a plazos de entrega y grabado. Aquí la personalización que Cristian Lay ya fabrica es una ventaja directa, y el regalo de una madre puede ser la primera joya de marca de su hija.</p></div>
+    <div class="card"><h4>La futura distribuidora creadora</h4><p>Mujer de 25 a 50 años que busca ingresos complementarios compatibles con su trabajo o con estar en casa. Ya consume TikTok e Instagram. Busca «ingresos extra desde casa» o «vender joyas sin inversión». Objeción: «¿es de verdad o es una pirámide?». Necesita transparencia antes que promesas.</p></div>
+  </div>
+
+  <h3>Mapa de búsquedas por intención</h3>
+  <p class="intro">Grupos de búsqueda propuestos como base del SEO de contenido y de categorías. Los volúmenes conviene medirlos con Semrush o Sistrix antes de priorizar; aquí no se afirma ninguno.</p>
+  <div class="grid g2">
+    <div class="card"><h4>Informativa: cuidado y significado</h4><p>Captación de público que aún no conoce la marca, con guías útiles por material.</p>
+      <div class="kw"><span>cómo limpiar plata que se ha puesto negra</span><span>diferencia entre baño de oro y chapado</span><span>joyas que no se oxidan con el agua</span><span>cómo limpiar piedras naturales</span><span>piedra según mes de nacimiento</span></div></div>
+    <div class="card"><h4>Transaccional: producto</h4><p>Categorías que hoy no posicionan y deberían trabajarse como páginas de aterrizaje.</p>
+      <div class="kw"><span>comprar bisutería online</span><span>joyas plata 925 mujer</span><span>pendientes perlas cultivadas</span><span>collar con nombre personalizado</span><span>pulseras acero mujer</span></div></div>
+    <div class="card"><h4>Cosmética para la clienta actual</h4><p>Categorías de cosmética orientadas a su momento de piel, no solo al producto.</p>
+      <div class="kw"><span>crema facial piel madura</span><span>sérum antiedad a partir de 40</span><span>protector solar facial diario</span><span>perfume mujer duradero</span><span>rutina facial sencilla</span></div></div>
+    <div class="card"><h4>Momento y regalo</h4><p>Colecciones por momento vital, no por material.</p>
+      <div class="kw"><span>regalo con significado para amiga</span><span>joya para madre primeriza</span><span>regalo graduación mujer</span><span>joya personalizada con fecha</span><span>regalo para empezar una nueva etapa</span></div></div>
+    <div class="card"><h4>Oportunidad de negocio</h4><p>Captación de red y creadoras, con mensajes transparentes.</p>
+      <div class="kw"><span>ingresos extra desde casa</span><span>vender joyas por internet sin inversión</span><span>cómo ser afiliada TikTok Shop</span><span>distribuidora joyería opiniones</span><span>cristian lay opiniones</span></div></div>
+  </div>
+
+  <h3>Qué canal actúa en cada momento</h3>
+  <div class="grid g4">
+    <div class="card"><h4>Descubrir</h4><p>TikTok e Instagram para el público joven, con joyería puesta. Facebook, WhatsApp e Instagram para la clienta de siempre, con rutinas de cosmética.</p></div>
+    <div class="card"><h4>Informarse</h4><p>Google y buscadores con IA. Guías y categorías con contenido útil, con datos estructurados.</p></div>
+    <div class="card"><h4>Comprar</h4><p>Web propia o TikTok Shop, siempre con la venta atribuida a una distribuidora o creadora.</p></div>
+    <div class="card"><h4>Repetir</h4><p>WhatsApp de la distribuidora, catálogo de campaña y email. El canal histórico de Cristian Lay.</p></div>
+  </div>
+</section>
+
+<!-- 4 COMPETENCIA -->
+<section class="panel" id="t4" role="tabpanel" aria-labelledby="b4" hidden>
+  <h2>Radar de posicionamiento</h2>
+  <p class="intro">Puntuación del 1 al 10 en seis ejes <span class="est">Est.</span>. En «precio accesible», más puntuación significa más asequible. Pulsa un nombre en la leyenda para ocultarlo y comparar.</p>
+  <div class="card"><div class="chartbox tall"><canvas id="cRadar" aria-label="Radar comparativo de competidores"></canvas></div>
+  <span class="src">Criterios: presencia digital (posiciones observadas en búsquedas de marca y no-marca y actividad social visible), reputación (resultados de «opiniones» y reseñas públicas), amplitud (familias de producto), especialización (foco del catálogo), experiencia web (observación de la navegación y la auditoría técnica).</span></div>
+
+  <h3>Tabla comparativa</h3>
+  <p class="intro">Pulsa los encabezados para ordenar. N/V = no verificado en esta investigación.</p>
+  <div class="tablewrap">
+    <table id="tComp">
+      <thead><tr>
+        <th data-k="0">Empresa</th><th data-k="1">Modelo</th><th data-k="2">Productos principales</th><th data-k="3">Precio est.</th><th data-k="4">Google</th><th data-k="5">Instagram</th><th data-k="6">Facebook</th><th data-k="7">LinkedIn</th><th data-k="8">Ficha Google</th><th data-k="9">Diferenciador clave</th>
+      </tr></thead>
+      <tbody>
+        <tr class="client"><td><a href="https://www.cristianlay.com/es/" target="_blank" rel="noopener">Cristian Lay</a></td><td>Venta directa + online</td><td>Joyas oro y plata, bisutería, cosmética, relojes, hogar</td><td data-v="2">≈ 15–60 €</td><td>N/D</td><td>✓</td><td>✓</td><td>✓ (11,8 mil)</td><td>No aplica</td><td>Fabricante propio desde 1981, personalización y red comercial</td></tr>
+        <tr><td>Tous</td><td>Cadena + online</td><td>Joyería de marca, plata, oro</td><td data-v="4">≈ 50–300 €</td><td>N/D</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>Marca icónica y tiendas físicas</td></tr>
+        <tr><td>Parfois</td><td>Cadena + online</td><td>Bisutería y complementos de moda</td><td data-v="1">≈ 5–30 €</td><td>N/D</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>Precio bajo y rotación de tendencia</td></tr>
+        <tr><td>Singularu</td><td>Marca digital</td><td>Joyería de acero y plata de tendencia</td><td data-v="3">≈ 20–60 €</td><td>N/D</td><td>✓</td><td>✓</td><td>N/V</td><td>N/V</td><td>Marketing de influencia y producto de tendencia</td></tr>
+        <tr><td>Oriflame</td><td>Venta directa social</td><td>Cosmética y bienestar</td><td data-v="2">≈ 5–40 €</td><td>N/D</td><td>✓</td><td>✓</td><td>✓</td><td>No aplica</td><td>Discurso de «venta social» y marca internacional</td></tr>
+        <tr><td>Essens</td><td>Venta por catálogo</td><td>Perfumes de equivalencia</td><td data-v="2">≈ 20–30 €</td><td>N/D</td><td>✓</td><td>✓</td><td>N/V</td><td>No aplica</td><td>Aparece en «perfumes venta por catálogo»</td></tr>
+        <tr><td><a href="https://mandalabisuteria.com/es/49-pulseras-con-piedras-naturales" target="_blank" rel="noopener">Nicho piedras con significado</a></td><td>Artesanas, Etsy, tiendas esotéricas</td><td>Pulseras y colgantes de piedra natural</td><td data-v="1">≈ 10–40 €</td><td>N/D</td><td>✓</td><td>Parcial</td><td>✗</td><td>Parcial</td><td>Relato emocional fuerte, pero sin escala ni marca nacional</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">Seguidores y valoraciones no se han podido contrastar para todos los actores y no se muestran para no inventar cifras. El dato de LinkedIn de Cristian Lay procede de su <a href="https://es.linkedin.com/company/cristian-lay" target="_blank" rel="noopener">página corporativa</a>. Precios: rangos orientativos de piezas de entrada <span class="est">Est.</span>.</div>
+</section>
+
+<!-- 5 POSICIONAMIENTO -->
+<section class="panel" id="t5" role="tabpanel" aria-labelledby="b5" hidden>
+  <h2>Mapa de posicionamiento</h2>
+  <p class="intro">Precio (bajo a alto) frente a especialización (generalista a especialista). El tamaño de cada burbuja refleja la presencia digital estimada <span class="est">Est.</span>. La burbuja con borde discontinuo marca hacia dónde podría moverse Cristian Lay si refuerza líneas más especializadas.</p>
+  <div class="card"><div class="chartbox tall"><canvas id="cBubble" aria-label="Mapa de posicionamiento precio frente a especialización"></canvas></div></div>
+
+  <h3>Cuota de visibilidad digital en búsquedas de producto</h3>
+  <div class="grid g2">
+    <div class="card"><div class="chartbox"><canvas id="cDonut" aria-label="Cuota de visibilidad estimada"></canvas></div></div>
+    <div class="card">
+      <h4>Nota metodológica <span class="est">Est.</span></h4>
+      <p>Estimación relativa de la visibilidad en búsquedas de producto sin marca. Se ha ponderado: presencia en el top 10 de las cinco consultas no-marca de la auditoría (60%), actividad observable en redes (20%), presencia en directorios y fichas de Google (10%) y reseñas públicas (10%). No es cuota de tráfico ni de ventas.</p>
+      <p style="margin-top:12px">La lectura importa más que el porcentaje: en búsquedas de marca Cristian Lay ocupa seis de las diez primeras posiciones; en búsquedas de producto su visibilidad es residual. El crecimiento está en la segunda columna.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6 DAFO -->
+<section class="panel" id="t6" role="tabpanel" aria-labelledby="b6" hidden>
+  <h2>DAFO competitivo</h2>
+  <p class="intro">Orientado al mercado: qué ventajas reales tiene Cristian Lay frente a la competencia y qué huecos está dejando libres esa competencia.</p>
+  <div class="dafo">
+    <div class="card"><h3>Fortalezas</h3><ul>
+      <li><i>💎</i><div><b>Fabricante, no revendedor</b><span>Control de diseño y capacidad de personalizar, ya visible en las categorías de joyas personalizadas. Puede probar y lanzar líneas nuevas con coherencia y a precio accesible.</span></div></li>
+      <li><i>🤝</i><div><b>Una red humana que nadie online tiene</b><span>Tous, Parfois o Singularu dependen de anuncios e influencers pagados. Cristian Lay tiene miles de distribuidoras que ya recomiendan producto.</span></div></li>
+      <li><i>🔎</i><div><b>Dominio total de la marca</b><span>Seis de los diez primeros resultados en «cristian lay joyería». La base de confianza está hecha.</span></div></li>
+      <li><i>👩‍👧</i><div><b>Un catálogo que sirve a dos generaciones</b><span>Cosmética para la clienta madura y joyería accesible para la joven. Pocas marcas cubren ambas con una misma red.</span></div></li>
+      <li><i>✨</i><div><b>«Belleza con alma» ya es su claim</b><span>El territorio emocional de la joyería con significado encaja con lo que la marca ya dice de sí misma.</span></div></li>
+    </ul></div>
+    <div class="card"><h3>Debilidades de la competencia</h3><ul>
+      <li><i>🧵</i><div><b>El nicho de piedras no tiene dueño</b><span>Artesanas, Etsy y tiendas esotéricas con buen relato pero sin escala, sin garantía de marca y sin logística nacional sólida.</span></div></li>
+      <li><i>🛍️</i><div><b>Las cadenas no cuentan historias</b><span>Parfois compite por precio y tendencia; Tous por marca. Ninguno ha construido un discurso de piedra y momento vital.</span></div></li>
+      <li><i>📄</i><div><b>Los agregadores no venden</b><span>Tiendeo o Catalogium captan la búsqueda de catálogo pero no tienen producto ni relación con la clienta. Son recuperables.</span></div></li>
+      <li><i>🧴</i><div><b>Oriflame y Essens viven de la cosmética</b><span>Su joyería es residual. En joyería con venta directa, Cristian Lay juega casi solo.</span></div></li>
+    </ul></div>
+    <div class="card"><h3>Amenazas</h3><ul>
+      <li><i>📉</i><div><b>El canal principal se estrecha</b><span>La venta directa cayó un 4,9% en 2024. Depender del 90% en un canal que se ajusta es el riesgo de fondo.</span></div></li>
+      <li><i>🪙</i><div><b>Oro en máximos</b><span>La demanda de joyería de oro cae a mínimos desde la pandemia; un catálogo centrado en oro y plata sufre.</span></div></li>
+      <li><i>📱</i><div><b>Bisutería barata en TikTok Shop</b><span>Vendedores de bajo coste ocupan la bisutería genérica. Competir ahí por precio no tiene sentido; por relato, sí.</span></div></li>
+      <li><i>⏳</i><div><b>Envejecer con la clienta</b><span>Si la marca solo habla a mujeres de 40 o más, la base se reduce año a año. Riesgo razonado, a confirmar con los datos de edad de la clientela <span class="est">Est.</span></span></div></li>
+      <li><i>🗣️</i><div><b>Reputación en manos de terceros</b><span>En «cristian lay opiniones» dominan Indeed, una queja en la OCU y blogs. La web propia aparece en la posición 8.</span></div></li>
+    </ul></div>
+    <div class="card"><h3>Oportunidades</h3><ul>
+      <li><i>🌈</i><div><b>Nuevas líneas con relato</b><span>Personalización, momentos vitales, color o piedras: espacios de tendencia que dependen menos del precio del oro.</span></div></li>
+      <li><i>🛠️</i><div><b>La web nueva como momento cero</b><span>Corregir duplicados, datos estructurados y sitemap en el lanzamiento cuesta mucho menos que arreglarlo después.</span></div></li>
+      <li><i>🎥</i><div><b>Distribuidoras creadoras</b><span>En España el 87% de las ventas top de TikTok Shop llega por afiliados. La red de Cristian Lay es una red de afiliadas en potencia.</span></div></li>
+      <li><i>🌸</i><div><b>La fragancia como puente</b><span>Los perfumes son la categoría que más crece en cosmética (+9,5% en 2025) y atraen a todas las edades: el paso natural de la joven que entró por una joya.</span></div></li>
+      <li><i>📚</i><div><b>Contenido que nadie grande está haciendo</b><span>Guías de cuidado por material y de regalo por momento: contenido útil, citable por buscadores con IA.</span></div></li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- 7 PALANCAS -->
+<section class="panel" id="t7" role="tabpanel" aria-labelledby="b7" hidden>
+  <h2>Cuatro palancas de crecimiento</h2>
+  <p class="intro">Cada palanca refuerza a las demás. La base técnica permite posicionar; el modelo híbrido hace que la red apoye el online en lugar de temerlo; las creadoras lo difunden; y las nuevas líneas dan producto propio con el que diferenciarse y con el que llegar a un público más joven.</p>
+
+  <div class="grid g2">
+    <div class="card lead-card">
+      <h4>1. Base técnica en la web nueva</h4>
+      <p>Convertir los hallazgos de la auditoría en requisitos para el equipo que desarrolla la web: URLs en minúsculas con redirecciones 301 desde las antiguas, canonical en todas las fichas, datos estructurados de producto, migas de pan y organización, sitemap de productos con fecha de actualización, robots.txt coherente y un mapa de redirecciones completo para no perder el posicionamiento de marca en el cambio. Recomendado también: llevar el blog del subdominio a una carpeta /blog/ del dominio principal para que su autoridad sume.</p>
+    </div>
+    <div class="card lead-card">
+      <h4>2. Online que suma a la red</h4>
+      <p>El miedo lógico de la red es que la web le quite ventas. La respuesta es la atribución: cada venta online se asigna a una distribuidora, por enlace personal, código o cercanía. Es el modelo que otras marcas de venta directa ya usan, con tiendas digitales por revendedora y la misma comisión que en catálogo.</p>
+      <span class="src">Referencia: <a href="https://www.elfinanciero.com.mx/empresas/2022/06/21/sombra-aqui-sombra-alla-avon-estrena-tienda-en-linea/" target="_blank" rel="noopener">Avon, tienda online con comisión del 30% para la consultora</a></span>
+    </div>
+    <div class="card lead-card">
+      <h4>3. Programa de distribuidoras creadoras</h4>
+      <p>Formar a una primera promoción de distribuidoras para crear contenido corto (unboxing, «qué piedra elegir», cuidado de la pieza) con código propio y material de marca. Piloto en TikTok Shop con una colección cápsula. Un blog o sección «Emprende con Cristian Lay» que cuente con honestidad el esfuerzo real: los afiliados que más venden publican entre 60 y 150 vídeos.</p>
+      <span class="src">Fuente del dato: <a href="https://inicia.academy/blog/como-empezar-tiktok-shop-espana" target="_blank" rel="noopener">Inicia Academy, 2026</a></span>
+    </div>
+    <div class="card lead-card">
+      <h4>4. Nuevas líneas de producto para probar</h4>
+      <p>Un catálogo muy centrado en oro y plata depende del precio del metal y habla sobre todo a la clienta actual. La recomendación es testar varias líneas con colecciones cápsula pequeñas, medir la respuesta en búsquedas y en el contenido de las creadoras, y fabricar a escala solo lo que funcione. Las opciones, más abajo.</p>
+    </div>
+  </div>
+
+  <h3>Palanca 5. Rejuvenecer la marca sin perder a la clienta de siempre</h3>
+  <p class="intro">No se trata de cambiar la cosmética ni su público, sino de abrir una segunda puerta de entrada. La joven entra por una joya y, si la experiencia es buena, recorre el resto del catálogo.</p>
+  <div class="grid g3">
+    <div class="card"><h4>Entrada: joyería de color</h4><p>Público de 20 a 35 años. Piezas de tendencia y precio accesible, contenido en TikTok e Instagram con creadoras jóvenes y compra online atribuida a una distribuidora.</p></div>
+    <div class="card"><h4>Puente: fragancias</h4><p>La categoría de cosmética que más crece y la que menos entiende de edades. Sets de joya y fragancia para regalo y muestras en los pedidos online.</p></div>
+    <div class="card"><h4>Fidelidad: cuidado de la piel</h4><p>Público de 40 años o más. Rutinas por tipo y momento de piel, recomendación personal de la distribuidora y catálogo de campaña.</p></div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h4>Dos tonos, una marca</h4><p>Mismo claim y misma identidad, pero comunicación distinta por línea: más fresca y visual en joyería joven, más experta y cercana en cosmética. Las creadoras también se reparten: distribuidoras jóvenes para la joyería, distribuidoras de 40 o más hablando de su propia piel.</p></div>
+    <div class="card"><h4>El regalo entre generaciones</h4><p>Madres que regalan a hijas y viceversa: colecciones y sets pensados para ese momento. Es la forma más natural de que la clienta actual traiga a la siguiente generación.</p></div>
+  </div>
+
+
+  <h3>Líneas de producto con potencial</h3>
+  <p class="intro">Ideas para validar, no decisiones tomadas. Cada una se probaría con pocas referencias antes de ampliar.</p>
+  <div class="grid g3">
+    <div class="card"><h4>Personalización</h4><p>Nombres, iniciales, fechas y grabados. Cristian Lay ya la fabrica; falta darle protagonismo y páginas propias por ocasión.</p></div>
+    <div class="card"><h4>Colecciones por momento vital</h4><p>Graduación, primer trabajo, maternidad, nueva etapa, amistad. Se busca el momento antes que el material, y encaja con el regalo.</p></div>
+    <div class="card"><h4>Piedras naturales con significado</h4><p>Cuarzo rosa, amatista, aventurina y otras, con guía de significado y de cuidado por material. Nicho en tendencia sin una marca nacional fuerte.</p></div>
+    <div class="card"><h4>Piedras de nacimiento</h4><p>Una piedra por mes: fácil de entender, muy regalable y con búsqueda recurrente todo el año.</p></div>
+    <div class="card"><h4>Color en esmalte y plata</h4><p>Dar color al catálogo sin depender de piedras: esmaltes, plata con acabados y piezas protagonistas, en línea con el giro hacia la plata de 2026.</p><span class="src">Referencia: <a href="https://www.elcorteingles.es/contenidos/moda-y-accesorios/adios-oro-hola-plata-tendencia-joyas/" target="_blank" rel="noopener">El Corte Inglés, tendencias 2026</a></span></div>
+    <div class="card"><h4>Joyas para no quitarse</h4><p>Acero y materiales resistentes al agua y al uso diario. Responde a la objeción más habitual en bisutería y encaja con el público joven.</p></div>
+  </div>
+  <div class="note">Cómo testar: dos o tres líneas en paralelo, entre 6 y 12 referencias cada una, contenido de creadoras durante una campaña y comparación de búsquedas, clics y ventas atribuidas. La línea ganadora pasa a colección completa.</div>
+
+  <h3>Recuperar la búsqueda de «catálogo»</h3>
+  <div class="card"><p>Hoy cada campaña publica su catálogo en una URL nueva, por ejemplo la campaña 13 del 7 al 27 de septiembre. Los agregadores indexan cada edición y se quedan con la búsqueda. Una única página permanente de «catálogo Cristian Lay actual», que se actualiza en cada campaña y conserva su historial, acumula autoridad campaña tras campaña y compite de tú a tú con Tiendeo o Catalogium.</p></div>
+
+  <h3>Guardarraíles de comunicación</h3>
+  <div class="grid g3">
+    <div class="card guard"><h4>Piedras, si se lanzan</h4><p>Hablar de simbolismo y tradición. Evitar verbos como curar, sanar o tratar.</p></div>
+    <div class="card guard"><h4>Ingresos</h4><p>Nada de «gana dinero solo grabando vídeos». Casos reales, rangos y el trabajo que hay detrás.</p></div>
+    <div class="card guard"><h4>Creadoras</h4><p>Toda publicación patrocinada, identificada como publicidad. Guía breve y obligatoria para la red.</p></div>
+  </div>
+</section>
+
+<!-- 8 HOJA DE RUTA -->
+<section class="panel" id="t8" role="tabpanel" aria-labelledby="b8" hidden>
+  <h2>Recomendaciones y hoja de ruta</h2>
+  <p class="intro">Acciones priorizadas por impacto y urgencia. El SEO orgánico tarda entre 4 y 9 meses en mostrar resultados sólidos en búsquedas genéricas; la parte técnica de la migración, en cambio, es urgente porque se decide antes del lanzamiento.</p>
+
+  <div class="grid g2">
+    <div class="card rec"><div class="row"><span class="prio p-alta">Alta</span><small>Inmediato</small></div>
+      <h4>Plan SEO de migración para la web nueva</h4>
+      <p>Documento de requisitos técnicos y mapa de redirecciones entregado al equipo de desarrollo antes del lanzamiento, con revisión en entorno de pruebas.</p>
+      <dl><dt>Impacto</dt><dd>Evita perder el dominio de marca y elimina de raíz la duplicación del catálogo</dd></dl></div>
+    <div class="card rec"><div class="row"><span class="prio p-alta">Alta</span><small>Inmediato</small></div>
+      <h4>Datos estructurados y sitemap de productos</h4>
+      <p>Esquemas de producto, migas de pan y organización en las plantillas; sitemap con todas las fichas y fecha de actualización.</p>
+      <dl><dt>Impacto</dt><dd>Resultados enriquecidos con precio y disponibilidad; mejor rastreo del catálogo completo</dd></dl></div>
+    <div class="card rec"><div class="row"><span class="prio p-alta">Alta</span><small>1 a 3 meses</small></div>
+      <h4>Categorías que compitan sin marca</h4>
+      <p>Reforzar bisutería, plata, perlas, personalizadas y colecciones por momento con texto útil, preguntas frecuentes y enlaces a guías de cuidado.</p>
+      <dl><dt>Impacto</dt><dd>Páginas capaces de posicionar en búsquedas de producto sin marca</dd></dl></div>
+    <div class="card rec"><div class="row"><span class="prio p-media">Media</span><small>1 a 3 meses</small></div>
+      <h4>Página permanente de catálogo y página de opiniones</h4>
+      <p>URL fija del catálogo vigente y una página de opiniones con reseñas verificadas en las fichas.</p>
+      <dl><dt>Impacto</dt><dd>Recupera tráfico de marca que hoy se llevan agregadores y mejora la reputación propia</dd></dl></div>
+    <div class="card rec"><div class="row"><span class="prio p-media">Media</span><small>3 a 6 meses</small></div>
+      <h4>Piloto de distribuidoras creadoras y TikTok Shop</h4>
+      <p>Primera promoción formada, colección cápsula, códigos atribuidos y medición de ventas por creadora.</p>
+      <dl><dt>Impacto</dt><dd>Branding con coste por resultado y una red que ve el online como aliado</dd></dl></div>
+    <div class="card rec"><div class="row"><span class="prio p-media">Media</span><small>3 a 6 meses</small></div>
+      <h4>Colección cápsula para público joven</h4>
+      <p>Una línea de joyería de color o tendencia pensada para 20 a 35 años, con creadoras jóvenes y un set de regalo con fragancia.</p>
+      <dl><dt>Impacto</dt><dd>Nuevas clientas que hoy no conocen la marca y una base que no envejece con la actual</dd></dl></div>
+    <div class="card rec"><div class="row"><span class="prio p-baja">Baja</span><small>6 a 12 meses</small></div>
+      <h4>Escalar a Portugal e Italia</h4>
+      <p>Replicar lo que funcione en España aprovechando que el hreflang ya está bien declarado.</p>
+      <dl><dt>Impacto</dt><dd>Crecimiento internacional sobre un modelo ya validado</dd></dl></div>
+  </div>
+
+  <h3>Secuencia recomendada</h3>
+  <div class="phases">
+    <div class="phase"><span class="when">Antes del lanzamiento</span><h4>Fase 0. Migración sin pérdidas</h4><p>Requisitos técnicos, mapa de redirecciones, plantillas de categoría y ficha, y medición configurada desde el primer día.</p></div>
+    <div class="phase"><span class="when">Meses 1 a 3</span><h4>Fase 1. Territorio propio</h4><p>Categorías optimizadas de joyería y de cosmética por momento de piel, guías de cuidado, catálogo permanente y opiniones. Investigación de palabras clave con volúmenes reales para decidir qué líneas nuevas testar.</p></div>
+    <div class="phase"><span class="when">Meses 3 a 6</span><h4>Fase 2. La red en pantalla</h4><p>Programa de distribuidoras creadoras, colección cápsula para público joven en TikTok Shop, sets de joya y fragancia, sección «Emprende con Cristian Lay» con información honesta.</p></div>
+    <div class="phase"><span class="when">Meses 6 a 12</span><h4>Fase 3. Escalar lo que funciona</h4><p>Convertir en colección completa la línea que mejor funcione, reforzar autoridad y preparar Portugal e Italia.</p></div>
+  </div>
+
+  <h3>Indicadores de seguimiento</h3>
+  <div class="grid g4">
+    <div class="card"><h4>Visibilidad sin marca</h4><p>Impresiones y clics en Search Console de consultas que no incluyen «cristian lay».</p></div>
+    <div class="card"><h4>Posiciones sin marca</h4><p>Número de palabras clave de producto y de cada línea nueva en el top 10.</p></div>
+    <div class="card"><h4>Ventas online atribuidas</h4><p>Porcentaje de pedidos online asignados a distribuidoras o creadoras.</p></div>
+    <div class="card"><h4>Edad de las nuevas clientas</h4><p>Porcentaje de compradoras online menores de 35 años y cuántas repiten en otra categoría.</p></div>
+    <div class="card"><h4>Creadoras activas</h4><p>Distribuidoras que publican al menos cuatro vídeos al mes y ventas generadas por cada una.</p></div>
+  </div>
+  <div class="note">Referencias de resultados se fijarán tras el primer mes con datos reales de Search Console y Analytics. Establecer objetivos numéricos sin esa base sería especular.</div>
+
+  <h3>Fuentes</h3>
+  <ol class="sources">
+    <li>Auditoría SEO de cristianlay.com, Los Martes No Hay Luna, 17/09/2026.</li>
+    <li><a href="https://avd.es/el-sector-de-la-venta-directa-en-espana-factura-6105-millones-de-euros-en-2024/" target="_blank" rel="noopener">AVD, datos de venta directa 2024</a> y <a href="https://avd.es/faq-items/cuales-son-las-cifras-de-la-venta-directa-en-espana/" target="_blank" rel="noopener">cifras del sector</a>.</li>
+    <li><a href="https://emprendedores.es/ideas-de-negocio/oportunidades-de-negocio/venta-directa/" target="_blank" rel="noopener">Emprendedores, venta directa 2022 (WFDSA)</a>.</li>
+    <li><a href="https://www.modaes.com/entorno/el-mercado-minorista-de-joyeria-y-relojeria-crece-un-6-y-supera-los-2100-millones-en-espana" target="_blank" rel="noopener">Informa DBK vía Modaes, joyería y relojería 2025</a>.</li>
+    <li><a href="https://www.cnmc.es/sites/default/files/editor_contenidos/Notas%20de%20prensa/2026/20260703_NP%20CE_IV_25.pdf" target="_blank" rel="noopener">CNMC, comercio electrónico 2025</a> y <a href="https://www.modaes.com/entorno/la-moda-online-acelera-en-espana-con-una-subida-del-135-en-el-segundo-trimestre" target="_blank" rel="noopener">joyería online 2T 2025</a>.</li>
+    <li><a href="https://www.finect.com/usuario/mariarefojos/articulos/el-oro-a-4500-dolares-hunde-la-compra-de-joyas-a-minimos-desde-la-pandemia" target="_blank" rel="noopener">World Gold Council vía Finect, demanda de joyería 2T 2026</a>.</li>
+    <li><a href="https://inicia.academy/blog/como-empezar-tiktok-shop-espana" target="_blank" rel="noopener">Inicia Academy, TikTok Shop España 2026</a> y <a href="https://www.cyberclick.es/numerical-blog/tiktok-shop-para-gran-consumo-es-rentable-de-verdad" target="_blank" rel="noopener">Cyberclick, comisiones 2026</a>.</li>
+    <li><a href="https://www.cuatrecasas.com/es/global/propiedad-intelectual/art/cnmc-actua-requerimientos-influencers-publicidad" target="_blank" rel="noopener">Cuatrecasas, requerimientos CNMC a influencers</a>.</li>
+    <li><a href="https://www.perlesandco.es/recursos/ft40072-las-6-tendencias-en-joyeria-para-la-primaveraverano-2026.html" target="_blank" rel="noopener">Perles &amp; Co</a>, <a href="https://benditaeva.es/en/blogs/blog/tendencias-en-joyeria-que-marcaran-el-2026-en-espana" target="_blank" rel="noopener">Bendita Eva</a> y <a href="https://ernestojoyero.com/5-tendencias-en-joyas-en-2026/" target="_blank" rel="noopener">Ernesto Joyero</a>, tendencias 2026.</li>
+    <li><a href="https://www.alimarket.es/nonfood/noticia_amp/425068/el-mercado-espanol-de-cosmetica--perfume-y-cuidado-personal-crecio-un-5-8--en-2025" target="_blank" rel="noopener">Stanpa vía Alimarket, cosmética y perfume 2025</a> y <a href="https://universidadeuropea.com/noticias/generacion-z-no-compra-sin-antes-scrollear-informe/" target="_blank" rel="noopener">Observatorio Generación Z, Universidad Europea y Prodigioso Volcán, 2025</a>.</li>
+    <li><a href="https://www.cristianlay.com/es/" target="_blank" rel="noopener">cristianlay.com</a> y <a href="https://es.linkedin.com/company/cristian-lay" target="_blank" rel="noopener">LinkedIn corporativo</a>, consultados en septiembre de 2026.</li>
+  </ol>
+</section>
+
+</main>
+
+<footer><div class="wrap">Estudio elaborado por Los Martes No Hay Luna, consultoría de estrategia digital y de negocio para empresas. Datos públicos consultados en septiembre de 2026. Las estimaciones están marcadas y deben validarse con los datos internos de Cristian Lay.</div></footer>
+
+<script>
+(function(){
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const charts = {};
+  const built = {};
+
+  function baseOpts(){
+    Chart.defaults.font.family = "Manrope, system-ui, sans-serif";
+    Chart.defaults.color = css('--muted');
+    Chart.defaults.borderColor = css('--line');
+  }
+
+  const builders = {
+    t2(){
+      charts.market = new Chart(document.getElementById('cMarket'), {
+        type:'line',
+        data:{labels:['2022','2023','2024','2025'],
+          datasets:[
+            {label:'Joyería y relojería minorista',data:[1750,1900,2020,2135],borderColor:css('--amethyst'),backgroundColor:css('--amethyst'),tension:.25,borderWidth:3,pointRadius:5},
+            {label:'Venta directa (todas las categorías)',data:[660,642,610.5,null],borderColor:css('--cl'),backgroundColor:css('--cl'),tension:.25,borderWidth:3,pointRadius:5,spanGaps:false}
+          ]},
+        options:{responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.raw!=null?c.raw.toLocaleString('es-ES'):'sin dato'} M€`}}},
+          scales:{y:{beginAtZero:true,title:{display:true,text:'Millones de euros'}}}}
+      });
+    },
+    t4(){
+      const n = css('--neutral'), n2 = css('--neutral2');
+      const set = (label,data,color,dash,width)=>({label,data,borderColor:color,backgroundColor:color+'22',pointBackgroundColor:color,borderWidth:width||1.5,borderDash:dash||[],pointRadius:3});
+      charts.radar = new Chart(document.getElementById('cRadar'), {
+        type:'radar',
+        data:{labels:['Presencia digital','Reputación online','Precio accesible','Amplitud de catálogo','Especialización','Experiencia web'],
+          datasets:[
+            {label:'Cristian Lay',data:[5,5,8,9,4,5],borderColor:css('--cl'),backgroundColor:'rgba(166,25,46,.15)',pointBackgroundColor:css('--cl'),borderWidth:4,pointRadius:4},
+            set('Tous',[9,8,4,7,7,8],n),
+            set('Parfois',[8,7,9,7,5,8],n2,[6,4]),
+            set('Singularu',[8,7,7,5,7,8],n,[2,3]),
+            set('Oriflame',[7,6,8,8,5,7],n2),
+            set('Essens',[5,6,8,4,8,5],n,[8,3,2,3])
+          ]},
+        options:{responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{position:'bottom'}},
+          scales:{r:{min:0,max:10,ticks:{stepSize:2,backdropColor:'transparent'},pointLabels:{font:{size:12,weight:'600'},color:css('--ink')},grid:{color:css('--line')},angleLines:{color:css('--line')}}}}
+      });
+    },
+    t5(){
+      const labelPlugin = {id:'lbl',afterDatasetsDraw(chart){
+        const ctx = chart.ctx;
+        chart.data.datasets.forEach((ds,i)=>{
+          const meta = chart.getDatasetMeta(i); if(meta.hidden) return;
+          meta.data.forEach((el,j)=>{
+            const d = ds.data[j]; ctx.save();
+            ctx.font = '600 11px Manrope, sans-serif'; ctx.fillStyle = css('--ink'); ctx.textAlign='center';
+            ctx.fillText(d.label, el.x, el.y - el.options.radius - 6); ctx.restore();
+          });
+        });
+      }};
+      const n = css('--neutral');
+      charts.bubble = new Chart(document.getElementById('cBubble'), {
+        type:'bubble',
+        data:{datasets:[
+          {label:'Competidores',data:[
+            {x:8,y:7,r:22,label:'Tous'},{x:2.5,y:4,r:20,label:'Parfois'},{x:5.2,y:8,r:16,label:'Singularu'},
+            {x:3.6,y:4.8,r:15,label:'Oriflame'},{x:4.4,y:8.8,r:9,label:'Essens'},{x:3,y:9.4,r:8,label:'Nicho piedras'}],
+            backgroundColor:n+'88',borderColor:n,borderWidth:1},
+          {label:'Cristian Lay hoy',data:[{x:3.8,y:2.4,r:14,label:'Cristian Lay hoy'}],backgroundColor:css('--cl')+'CC',borderColor:css('--cl'),borderWidth:2},
+          {label:'Cristian Lay con líneas especializadas',data:[{x:4.8,y:7.2,r:16,label:'Destino propuesto'}],backgroundColor:'transparent',borderColor:css('--cl'),borderWidth:2,borderDash:[6,4]}
+        ]},
+        options:{responsive:true,maintainAspectRatio:false,
+          layout:{padding:{top:20}},
+          plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>`${c.raw.label}: precio ${c.raw.x}/10, especialización ${c.raw.y}/10`}}},
+          scales:{x:{min:0,max:10,title:{display:true,text:'Precio: bajo a alto'}},y:{min:0,max:11,title:{display:true,text:'Especialización: generalista a especialista'}}}},
+        plugins:[labelPlugin]
+      });
+      charts.donut = new Chart(document.getElementById('cDonut'), {
+        type:'doughnut',
+        data:{labels:['Tous','Parfois','Singularu','Oriflame','Nicho piedras','Essens','Cristian Lay'],
+          datasets:[{data:[26,22,16,12,10,8,6],
+            backgroundColor:['#9C9095','#B4A9AE','#877B80','#C8BEC2','#E9C6C9','#A39A9E',css('--cl')],
+            borderColor:css('--surface'),borderWidth:2}]},
+        options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
+          plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>`${c.label}: ≈ ${c.raw}% (estimación)`}}}}
+      });
+    }
+  };
+
+  const tabs = [...document.querySelectorAll('[role="tab"]')];
+  function show(tab){
+    tabs.forEach(t=>{
+      const on = t===tab;
+      t.setAttribute('aria-selected',on); t.tabIndex = on?0:-1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    const id = tab.getAttribute('aria-controls');
+    if(typeof Chart!=='undefined' && builders[id] && !built[id]){ baseOpts(); builders[id](); built[id]=true; }
+    try{ localStorage.setItem('cl-tab', id); }catch(e){}
+  }
+  tabs.forEach((t,i)=>{
+    t.addEventListener('click',()=>show(t));
+    t.addEventListener('keydown',e=>{
+      let k=null;
+      if(e.key==='ArrowRight') k=tabs[(i+1)%tabs.length];
+      if(e.key==='ArrowLeft') k=tabs[(i-1+tabs.length)%tabs.length];
+      if(k){ e.preventDefault(); k.focus(); show(k); }
+    });
+  });
+  show(tabs[0]);
+
+  // Tabla ordenable
+  const table = document.getElementById('tComp');
+  const ths = table.querySelectorAll('th');
+  ths.forEach(th=>{
+    th.tabIndex = 0;
+    const sort = ()=>{
+      const k = +th.dataset.k;
+      const dir = th.getAttribute('aria-sort')==='ascending' ? 'descending' : 'ascending';
+      ths.forEach(h=>h.removeAttribute('aria-sort')); th.setAttribute('aria-sort',dir);
+      const body = table.tBodies[0];
+      const rows = [...body.rows];
+      rows.sort((a,b)=>{
+        const ca=a.cells[k], cb=b.cells[k];
+        const va = ca.dataset.v ?? ca.textContent.trim(), vb = cb.dataset.v ?? cb.textContent.trim();
+        const r = (!isNaN(va) && !isNaN(vb)) ? (va - vb) : va.localeCompare(vb,'es');
+        return dir==='ascending' ? r : -r;
+      });
+      rows.forEach(r=>body.appendChild(r));
+    };
+    th.addEventListener('click',sort);
+    th.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); sort(); } });
+  });
+})();
+</script>
+</body>
+</html>
